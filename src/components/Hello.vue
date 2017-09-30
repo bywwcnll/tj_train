@@ -1,53 +1,49 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div id="canvasC">
   </div>
 </template>
 
 <script>
-export default {
-  name: 'hello',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+  import * as THREE from 'three'
+  export default {
+    name: 'hello',
+    mounted(){
+      let renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById('canvasC').innerHTML = '';
+      document.getElementById('canvasC').appendChild(renderer.domElement);
+      let camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 500);
+      camera.position.set(0, 0, 100);
+      camera.lookAt(new THREE.Vector3(0, 0, 0));
+      let scene = new THREE.Scene();
+
+
+      let lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+      let geometry = new THREE.Geometry();
+      geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
+      geometry.vertices.push(new THREE.Vector3(0, 10, 10));
+      geometry.vertices.push(new THREE.Vector3(20, 0, 0));
+      let line = new THREE.Math.Line3(new THREE.Vector3(-10, 0, 0), new THREE.Vector3(0, 10, 10))
+      scene.add(line);
+
+      let circleGeometry = new THREE.CircleGeometry( 5, 32 );
+      let mbMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+      let circle = new THREE.Mesh( circleGeometry, mbMaterial );
+      scene.add( circle );
+
+      renderer.render(scene, camera);
+
+    },
+    data () {
+      return {
+      }
+    },
+    computed: {
+    },
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
+<style scoped lang="scss">
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>

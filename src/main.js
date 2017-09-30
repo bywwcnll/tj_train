@@ -3,13 +3,21 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Detector from './utils/detector'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
-})
+
+if (Detector.webgl) {
+  // Initiate function or other initializations here
+  new Vue({
+    el: '#app',
+    router,
+    template: '<App/>',
+    components: { App }
+  })
+
+} else {
+  var warning = Detector.getWebGLErrorMessage();
+  window.document.getElementById('app').appendChild(warning);
+}
