@@ -8,31 +8,35 @@
   export default {
     name: 'hello',
     mounted(){
-      let renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.getElementById('canvasC').innerHTML = '';
-      document.getElementById('canvasC').appendChild(renderer.domElement);
-      let camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 500);
-      camera.position.set(0, 0, 100);
-      camera.lookAt(new THREE.Vector3(0, 0, 0));
-      let scene = new THREE.Scene();
+    	let {innerWidth, innerHeight, requestAnimationFrame} = window
+      let canvasC = document.getElementById('canvasC')
+      let scene = new THREE.Scene()
+      let camera = new THREE.PerspectiveCamera(90, innerWidth/innerHeight, 0.1, 1000)
+      camera.position.z = 10
+      let renderer = new THREE.WebGLRenderer()
+      renderer.setSize(innerWidth, innerHeight)
+      renderer.setClearColor('#fff')
+      canvasC.appendChild(renderer.domElement)
 
+      let geometry = new THREE.CubeGeometry(2, 3, 1)
+      let material = new THREE.MeshBasicMaterial({color: '#ddd'})
+      let cube = new THREE.Mesh(geometry, material)
+      cube.rotation.x = 0.7
+      scene.add(cube)
 
-      let lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
-      let geometry = new THREE.Geometry();
-      geometry.vertices.push(new THREE.Vector3(-10, 0, 0));
-      geometry.vertices.push(new THREE.Vector3(0, 10, 10));
-      geometry.vertices.push(new THREE.Vector3(20, 0, 0));
-      let line = new THREE.Math.Line3(new THREE.Vector3(-10, 0, 0), new THREE.Vector3(0, 10, 10))
-      scene.add(line);
-
-      let circleGeometry = new THREE.CircleGeometry( 5, 32 );
-      let mbMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-      let circle = new THREE.Mesh( circleGeometry, mbMaterial );
-      scene.add( circle );
-
-      renderer.render(scene, camera);
-
+      let count = 0
+      let render = (timestemp)=>{
+//        cube.rotation.x += 0.02;
+        cube.rotation.y += 0.02;
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+        count++
+      }
+//      setInterval(()=>{
+//      	console.log(count)
+//        count = 0
+//      }, 1000)
+      render()
     },
     data () {
       return {
